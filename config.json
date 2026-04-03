@@ -1,0 +1,156 @@
+{
+  "company": {
+    "name": "Watlogs Pvt Ltd",
+    "logoInitial": "W",
+    "logoSuffix": "ATLOGS",
+    "logoSubtitle": "PVT LTD",
+    "portalName": "Watlogs Pvt Ltd Campus Portal",
+    "portalTagline": "Watlogs Pvt Ltd — Campus Recruitment Portal",
+    "portalSubTagline": "Connecting Talent & Opportunity across India",
+    "division": "Campus Recruitment Division",
+    "pdfDivisionHeader": "WATLOGS PVT LTD — CAMPUS RECRUITMENT DIVISION",
+    "website": "watlogs.com"
+  },
+  "drive": {
+    "pageTitle": "Campus Drive 2025 — Watlogs Pvt Ltd Application Form",
+    "formTitle": "Campus Drive — Online Application Form",
+    "formSubtitle": "Read all instructions carefully before filling. All fields marked * are mandatory.",
+    "formNumber": "WPL/2025/001",
+    "formPrefix": "WPL",
+    "academicYear": "2024\u201325",
+    "season": "Placement Season — Active",
+    "pdfFormTitle": "CAMPUS DRIVE — ONLINE APPLICATION FORM"
+  },
+  "notice": {
+    "prefix": "Important",
+    "segments": [
+      { "text": "Ensure your details match your official documents exactly. Aadhaar last 4 digits are collected solely for identity verification and will not be stored beyond that process. Application once submitted ", "bold": false },
+      { "text": "cannot be edited", "bold": true },
+      { "text": ". Your PDF will download automatically on submission.", "bold": false }
+    ]
+  },
+  "fields": {
+    "legalName": {
+      "label": "Legal Full Name",
+      "placeholder": "As per Aadhaar / PAN card",
+      "hint": "Enter your name exactly as it appears on your Aadhaar card",
+      "error": "Please enter your legal full name."
+    },
+    "email": {
+      "label": "Email Address",
+      "placeholder": "example@email.com",
+      "hint": "Official communication will be sent to this email address",
+      "error": "Please enter a valid email address."
+    },
+    "mobile": {
+      "label": "Mobile Number",
+      "prefix": "+91",
+      "placeholder": "10-digit number",
+      "error": "Please enter a valid 10-digit mobile number."
+    },
+    "aadhar": {
+      "label": "Aadhaar \u2014 Last 4 Digits",
+      "maskPrefix": "XXXX \u00a0 XXXX \u00a0",
+      "placeholder": "0000",
+      "hint": "Enter only the last 4 digits of your 12-digit Aadhaar number",
+      "error": "Please enter the last 4 digits of your Aadhaar number."
+    },
+    "college": {
+      "label": "College / University Name",
+      "placeholder": "Full name of your institution",
+      "error": "Please enter your college / university name."
+    },
+    "stream": {
+      "label": "Stream / Branch",
+      "placeholder": "\u2014 Select your stream / branch \u2014",
+      "error": "Please select your stream / branch."
+    },
+    "passout": {
+      "label": "Year of Pass Out",
+      "placeholder": "\u2014 Select year \u2014",
+      "error": "Please select your year of pass out."
+    },
+    "declare": {
+      "checkboxLabel": "I have read and agree to the above declaration.",
+      "error": "You must accept the declaration to proceed."
+    }
+  },
+  "sections": {
+    "personalDetails": "Personal Details",
+    "academicDetails": "Academic Details",
+    "declarationConsent": "Declaration & Consent"
+  },
+  "declaration": {
+    "uiText": "I hereby declare that the information furnished in this application form is true, complete, and correct to the best of my knowledge and belief. I understand that any incorrect or false information will disqualify me from the selection process and may result in rejection at any stage of recruitment. I consent to the collection and use of my personal data solely for the purpose of this campus recruitment drive in accordance with applicable data protection regulations.",
+    "pdfText": "I hereby declare that all information furnished above is true, correct and complete to the best of my knowledge. I understand that any false or misleading information will disqualify my candidature. I consent to processing of my personal data for campus recruitment purposes as per {companyName} data policy."
+  },
+  "instructions": [
+    "This form is for the exclusive use of {companyName} Campus Drive.",
+    "Bring original documents for verification on the day of interview.",
+    "Report to the venue at least 30 minutes before the scheduled time.",
+    "Carry a printed copy of this application along with a valid photo ID.",
+    "Mobile phones must be switched off during the selection process.",
+    "False or misleading information will result in immediate disqualification.",
+    "{companyName} reserves the right to modify or cancel the drive without prior notice."
+  ],
+  "signatureLabels": ["CANDIDATE SIGNATURE", "DATE", "INSTITUTE STAMP / SEAL"],
+  "streams": [
+    {
+      "group": "Engineering",
+      "options": [
+        "Computer Science & Engineering (CSE)",
+        "Information Technology (IT)",
+        "Electronics & Communication Engineering (ECE)",
+        "Electrical Engineering (EEE)",
+        "Mechanical Engineering (ME)",
+        "Civil Engineering (CE)",
+        "Chemical Engineering",
+        "Artificial Intelligence & Data Science (AIDS)",
+        "Other Engineering"
+      ]
+    },
+    {
+      "group": "Science",
+      "options": [
+        "B.Sc. / M.Sc. Computer Science",
+        "B.Sc. / M.Sc. Mathematics",
+        "B.Sc. Physics / Chemistry",
+        "B.Sc. Statistics / Data Analytics",
+        "Other Science"
+      ]
+    },
+    {
+      "group": "Management / Commerce",
+      "options": [
+        "BBA / MBA",
+        "B.Com / M.Com",
+        "Other Commerce / Management"
+      ]
+    },
+    {
+      "group": "Computer Applications",
+      "options": [
+        "MCA (Master of Computer Applications)",
+        "BCA (Bachelor of Computer Applications)"
+      ]
+    },
+    {
+      "group": "Arts / Humanities",
+      "options": [
+        "BA / MA",
+        "Other Arts / Humanities"
+      ]
+    },
+    {
+      "group": "Other",
+      "options": [
+        "Other (Not listed above)"
+      ]
+    }
+  ],
+  "passoutYears": ["2025", "2026", "2024", "2023", "2027"],
+  "ipEndpoints": [
+    "https://api.ipify.org?format=json",
+    "https://api64.ipify.org?format=json"
+  ]
+}
