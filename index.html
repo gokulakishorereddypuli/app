@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Campus Drive 2025 — Online Application Form</title>
+<title id="pageTitle"></title>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -183,6 +183,13 @@
   }
   .site-footer span { color: rgba(255,255,255,0.75); }
 
+  /* CAPTCHA MODAL */
+  .captcha-question {
+    font-size: 22px; font-weight: 700; color: #003580; margin: 14px 0 10px;
+    font-family: 'IBM Plex Mono', monospace; letter-spacing: 1px;
+  }
+  .captcha-icon { font-size: 28px; margin-bottom: 10px; }
+
   /* Responsive */
   @media (max-width: 576px) {
     .lbl-cell { width: 100%; display: block; border-right: none; border-bottom: 1px solid #dde8f5; padding: 10px 14px 6px; }
@@ -199,15 +206,23 @@
 <div class="portal-topbar">
   <div class="container portal-topbar-inner">
     <div class="portal-brand">
-      <div class="portal-logo">TechRecruit<span>.</span></div>
+      <div class="portal-logo">
+        <svg id="logoSvg" width="82" height="28" viewBox="0 0 82 28" xmlns="http://www.w3.org/2000/svg">
+          <rect width="82" height="28" rx="3" fill="#ffffff"/>
+          <text id="svgLogoInitial" x="10" y="20" font-family="IBM Plex Sans,sans-serif" font-weight="700" font-size="15" fill="#003580"></text>
+          <text id="svgLogoSuffix" x="24" y="15" font-family="IBM Plex Sans,sans-serif" font-weight="600" font-size="8.5" fill="#006633"></text>
+          <text id="svgLogoSubtitle" x="24" y="24" font-family="IBM Plex Sans,sans-serif" font-size="6.5" fill="#003580"></text>
+          <rect x="2" y="25.5" width="78" height="1.5" rx="1" fill="#006633"/>
+        </svg>
+      </div>
       <div class="portal-brand-text">
-        <strong>National Campus Placement Portal</strong>
-        Connecting Institutions &amp; Employers across India
+        <strong id="portalTagline"></strong>
+        <span id="portalSubTagline"></span>
       </div>
     </div>
     <div class="portal-right">
-      <strong>Academic Year 2024–25</strong>
-      Placement Season — Active
+      <strong id="portalAcademicYear"></strong>
+      <span id="portalSeason"></span>
     </div>
   </div>
 </div>
@@ -216,12 +231,12 @@
 <div class="header-band">
   <div class="container header-band-inner">
     <div>
-      <div class="form-title">Campus Drive — Online Application Form</div>
-      <div class="form-subtitle">Read all instructions carefully before filling. All fields marked * are mandatory.</div>
+      <div class="form-title" id="formTitle"></div>
+      <div class="form-subtitle" id="formSubtitle"></div>
     </div>
     <div class="form-code-badge">
       <small>FORM NUMBER</small>
-      CDP / 2025 / 001
+      <span id="formNumber"></span>
     </div>
   </div>
 </div>
@@ -229,11 +244,7 @@
 <!-- NOTICE BAR -->
 <div class="notice-bar">
   <div class="container">
-    <p>
-      <b>Important:</b> Ensure your details match your official documents exactly.
-      Aadhaar last 4 digits are collected solely for identity verification and will not be stored beyond that process.
-      Application once submitted <b>cannot be edited</b>. Your PDF will download automatically on submission.
-    </p>
+    <p id="noticeText"></p>
   </div>
 </div>
 
@@ -246,56 +257,54 @@
       <div class="section-card">
         <div class="section-head">
           <div class="snum">1</div>
-          <div class="stitle">Personal Details</div>
+          <div class="stitle" id="sectionPersonalTitle"></div>
         </div>
         <table class="field-table">
 
           <tr>
-            <td class="lbl-cell">Legal Full Name <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblLegalName"></span> <span class="req">*</span></td>
             <td class="inp-cell">
-              <input type="text" class="form-control" id="legalName"
-                placeholder="As per Aadhaar / PAN card" maxlength="80" />
-              <div class="hint">Enter your name exactly as it appears on your Aadhaar card</div>
-              <div class="err-msg" id="e-legalName">Please enter your legal full name.</div>
+              <input type="text" class="form-control" id="legalName" maxlength="80" />
+              <div class="hint" id="hintLegalName"></div>
+              <div class="err-msg" id="e-legalName"></div>
             </td>
           </tr>
 
           <tr>
-            <td class="lbl-cell">Email Address <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblEmail"></span> <span class="req">*</span></td>
             <td class="inp-cell">
-              <input type="email" class="form-control" id="email"
-                placeholder="example@email.com" maxlength="100" style="max-width:360px;" />
-              <div class="hint">Official communication will be sent to this email address</div>
-              <div class="err-msg" id="e-email">Please enter a valid email address.</div>
+              <input type="email" class="form-control" id="email" maxlength="100" style="max-width:360px;" />
+              <div class="hint" id="hintEmail"></div>
+              <div class="err-msg" id="e-email"></div>
             </td>
           </tr>
 
           <tr>
-            <td class="lbl-cell">Mobile Number <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblMobile"></span> <span class="req">*</span></td>
             <td class="inp-cell">
               <div class="input-group" style="max-width:240px;">
-                <span class="input-group-text"
-                  style="font-size:13px;background:#f4f8ff;border-color:#b0c4de;color:#2c3e60;font-weight:600;border-radius:3px 0 0 3px;">+91</span>
+                <span class="input-group-text" id="mobilePrefix"
+                  style="font-size:13px;background:#f4f8ff;border-color:#b0c4de;color:#2c3e60;font-weight:600;border-radius:3px 0 0 3px;"></span>
                 <input type="tel" class="form-control" id="mobile"
-                  placeholder="10-digit number" maxlength="10"
+                  maxlength="10"
                   oninput="this.value=this.value.replace(/\D/g,'')"
                   style="border-radius:0 3px 3px 0;" />
               </div>
-              <div class="err-msg" id="e-mobile">Please enter a valid 10-digit mobile number.</div>
+              <div class="err-msg" id="e-mobile"></div>
             </td>
           </tr>
 
           <tr>
-            <td class="lbl-cell">Aadhaar — Last 4 Digits <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblAadhar"></span> <span class="req">*</span></td>
             <td class="inp-cell">
               <div class="aadhar-wrap">
-                <span class="aadhar-prefix">XXXX &nbsp; XXXX &nbsp;</span>
+                <span class="aadhar-prefix" id="aadharMask"></span>
                 <input type="text" class="form-control aadhar-input" id="aadhar"
-                  placeholder="0000" maxlength="4"
+                  maxlength="4"
                   oninput="this.value=this.value.replace(/\D/g,'')" />
               </div>
-              <div class="hint">Enter only the last 4 digits of your 12-digit Aadhaar number</div>
-              <div class="err-msg" id="e-aadhar">Please enter the last 4 digits of your Aadhaar number.</div>
+              <div class="hint" id="hintAadhar"></div>
+              <div class="err-msg" id="e-aadhar"></div>
             </td>
           </tr>
 
@@ -306,75 +315,31 @@
       <div class="section-card">
         <div class="section-head">
           <div class="snum">2</div>
-          <div class="stitle">Academic Details</div>
+          <div class="stitle" id="sectionAcademicTitle"></div>
         </div>
         <table class="field-table">
 
           <tr>
-            <td class="lbl-cell">College / University Name <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblCollege"></span> <span class="req">*</span></td>
             <td class="inp-cell">
-              <input type="text" class="form-control" id="college"
-                placeholder="Full name of your institution" maxlength="120" />
-              <div class="err-msg" id="e-college">Please enter your college / university name.</div>
+              <input type="text" class="form-control" id="college" maxlength="120" />
+              <div class="err-msg" id="e-college"></div>
             </td>
           </tr>
 
           <tr>
-            <td class="lbl-cell">Stream / Branch <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblStream"></span> <span class="req">*</span></td>
             <td class="inp-cell">
-              <select class="form-select" id="stream" style="max-width:360px;">
-                <option value="">— Select your stream / branch —</option>
-                <optgroup label="Engineering">
-                  <option>Computer Science &amp; Engineering (CSE)</option>
-                  <option>Information Technology (IT)</option>
-                  <option>Electronics &amp; Communication Engineering (ECE)</option>
-                  <option>Electrical Engineering (EEE)</option>
-                  <option>Mechanical Engineering (ME)</option>
-                  <option>Civil Engineering (CE)</option>
-                  <option>Chemical Engineering</option>
-                  <option>Artificial Intelligence &amp; Data Science (AIDS)</option>
-                  <option>Other Engineering</option>
-                </optgroup>
-                <optgroup label="Science">
-                  <option>B.Sc. / M.Sc. Computer Science</option>
-                  <option>B.Sc. / M.Sc. Mathematics</option>
-                  <option>B.Sc. Physics / Chemistry</option>
-                  <option>B.Sc. Statistics / Data Analytics</option>
-                  <option>Other Science</option>
-                </optgroup>
-                <optgroup label="Management / Commerce">
-                  <option>BBA / MBA</option>
-                  <option>B.Com / M.Com</option>
-                  <option>Other Commerce / Management</option>
-                </optgroup>
-                <optgroup label="Computer Applications">
-                  <option>MCA (Master of Computer Applications)</option>
-                  <option>BCA (Bachelor of Computer Applications)</option>
-                </optgroup>
-                <optgroup label="Arts / Humanities">
-                  <option>BA / MA</option>
-                  <option>Other Arts / Humanities</option>
-                </optgroup>
-                <optgroup label="Other">
-                  <option>Other (Not listed above)</option>
-                </optgroup>
-              </select>
-              <div class="err-msg" id="e-stream">Please select your stream / branch.</div>
+              <select class="form-select" id="stream" style="max-width:360px;"></select>
+              <div class="err-msg" id="e-stream"></div>
             </td>
           </tr>
 
           <tr>
-            <td class="lbl-cell">Year of Pass Out <span class="req">*</span></td>
+            <td class="lbl-cell"><span id="lblPassout"></span> <span class="req">*</span></td>
             <td class="inp-cell">
-              <select class="form-select" id="passout" style="max-width:180px;">
-                <option value="">— Select year —</option>
-                <option>2025</option>
-                <option>2026</option>
-                <option>2024</option>
-                <option>2023</option>
-                <option>2027</option>
-              </select>
-              <div class="err-msg" id="e-passout">Please select your year of pass out.</div>
+              <select class="form-select" id="passout" style="max-width:180px;"></select>
+              <div class="err-msg" id="e-passout"></div>
             </td>
           </tr>
 
@@ -385,22 +350,20 @@
       <div class="section-card">
         <div class="section-head">
           <div class="snum">3</div>
-          <div class="stitle">Declaration &amp; Consent</div>
+          <div class="stitle" id="sectionDeclTitle"></div>
         </div>
         <div style="padding:16px 18px;">
-          <div class="declaration-box">
-            I hereby declare that the information furnished in this application form is true, complete, and correct to the best of my knowledge and belief. I understand that any incorrect or false information will disqualify me from the selection process and may result in rejection at any stage of recruitment. I consent to the collection and use of my personal data solely for the purpose of this campus recruitment drive in accordance with applicable data protection regulations.
-          </div>
+          <div class="declaration-box" id="declarationText"></div>
           <div class="form-check mb-1">
             <input class="form-check-input" type="checkbox" id="declare"
               style="width:16px;height:16px;margin-top:2px;accent-color:#003580;cursor:pointer;" />
             <label class="form-check-label" for="declare"
               style="font-size:13px;color:#2c3e60;padding-left:6px;cursor:pointer;">
-              I have read and agree to the above declaration.
+              <span id="declarationCheckboxLabel"></span>
               <span style="color:#cc0000;font-size:15px;vertical-align:middle;">*</span>
             </label>
           </div>
-          <div class="err-msg" id="e-declare">You must accept the declaration to proceed.</div>
+          <div class="err-msg" id="e-declare"></div>
         </div>
       </div>
 
@@ -428,14 +391,14 @@
 <!-- SUCCESS OVERLAY -->
 <div class="success-overlay" id="successOverlay">
   <div class="success-modal">
-    <div class="success-icon">✓</div>
+    <div class="success-icon">&#10003;</div>
     <div class="success-title">Application Submitted!</div>
     <div class="success-msg">
       Your application has been successfully submitted.<br>Your Application Reference Number is:
     </div>
     <div class="app-id-box">
       <small>APPLICATION REFERENCE NUMBER</small>
-      <span id="modalAppId">CDP-000000</span>
+      <span id="modalAppId"></span>
     </div>
     <p style="font-size:12px;color:#6a7a90;margin-bottom:20px;">
       Your application form has been downloaded as a PDF.<br>Please keep a copy for your records and future reference.
@@ -446,21 +409,127 @@
   </div>
 </div>
 
+<!-- CAPTCHA OVERLAY -->
+<div class="success-overlay" id="captchaOverlay">
+  <div class="success-modal" style="max-width:360px;">
+    <div class="captcha-icon">&#128274;</div>
+    <div class="success-title" style="font-size:17px;margin-bottom:6px;">Security Verification</div>
+    <div class="success-msg">Solve the challenge below to continue:</div>
+    <div class="captcha-question" id="captchaQuestion"></div>
+    <input type="number" id="captchaInput" class="form-control"
+      style="text-align:center;font-size:18px;font-family:'IBM Plex Mono',monospace;max-width:140px;margin:0 auto 6px;"
+      placeholder="Answer"
+      onkeydown="if(event.key==='Enter')submitCaptcha()" />
+    <div class="err-msg" id="captchaError" style="margin-bottom:8px;">Incorrect answer. Please try again.</div>
+    <div class="d-flex gap-2 justify-content-center" style="margin-top:14px;">
+      <button type="button" class="reset-btn" onclick="closeCaptcha()">Cancel</button>
+      <button type="button" class="submit-btn" onclick="submitCaptcha()">
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+          <path d="M1 6.5h9M6.5 2.5l5 4-5 4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Verify &amp; Continue
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="site-footer">
-  <span>TechRecruit Campus Portal</span> &nbsp;·&nbsp;
-  National Campus Placement Authority &nbsp;·&nbsp;
-  Academic Year 2024–25 &nbsp;·&nbsp;
-  Form CDP/2025/001
+  <span id="footerPortalName"></span> &nbsp;&middot;&nbsp;
+  <span id="footerDivision"></span> &nbsp;&middot;&nbsp;
+  Academic Year <span id="footerYear"></span> &nbsp;&middot;&nbsp;
+  Form <span id="footerFormNumber"></span>
 </footer>
 
 <script>
-// ── VALIDATE ─────────────────────────────────────────────────────────────────
+// ── CONFIG ─────────────────────────────────────────────────────────────────────
+// All runtime values are loaded from config.json — no hardcoded strings below.
+var APP_CONFIG = null;
+
+// ── CLIENT IP ─────────────────────────────────────────────────────────────────
+var clientIP = 'Fetching...';
+
+function fetchClientIP(endpoints) {
+  var idx = 0;
+  function tryNext() {
+    if (idx >= endpoints.length) { clientIP = 'Unavailable'; return; }
+    var url = endpoints[idx++];
+    fetch(url, { signal: AbortSignal.timeout(5000) })
+      .then(function(res) { return res.json(); })
+      .then(function(data) {
+        if (data && data.ip) { clientIP = data.ip; }
+        else { tryNext(); }
+      })
+      .catch(function(err) {
+        console.error('IP fetch failed for', url, err);
+        tryNext();
+      });
+  }
+  tryNext();
+}
+
+// ── CAPTCHA ───────────────────────────────────────────────────────────────────
+var captchaAnswer = 0;
+var captchaPendingData = null;
+
+function generateCaptcha() {
+  var ops = ['+', '-', '\u00d7'];
+  var rand = new Uint32Array(3);
+  crypto.getRandomValues(rand);
+  var op = ops[rand[0] % ops.length];
+  var a, b, answer;
+  if (op === '+') {
+    a = (rand[1] % 20) + 1;
+    b = (rand[2] % 20) + 1;
+    answer = a + b;
+  } else if (op === '-') {
+    a = (rand[1] % 20) + 10;
+    b = (rand[2] % (a - 1)) + 1;
+    answer = a - b;
+  } else {
+    a = (rand[1] % 9) + 2;
+    b = (rand[2] % 9) + 2;
+    answer = a * b;
+  }
+  captchaAnswer = answer;
+  document.getElementById('captchaQuestion').textContent = a + ' ' + op + ' ' + b + ' = ?';
+  document.getElementById('captchaInput').value = '';
+  document.getElementById('captchaError').classList.remove('show');
+}
+
+function showCaptcha(data) {
+  captchaPendingData = data;
+  generateCaptcha();
+  document.getElementById('captchaOverlay').classList.add('show');
+  setTimeout(function() { document.getElementById('captchaInput').focus(); }, 100);
+}
+
+function submitCaptcha() {
+  var val = parseInt(document.getElementById('captchaInput').value.trim(), 10);
+  if (isNaN(val) || val !== captchaAnswer) {
+    document.getElementById('captchaError').classList.add('show');
+    generateCaptcha();
+    return;
+  }
+  document.getElementById('captchaOverlay').classList.remove('show');
+  var data = captchaPendingData;
+  captchaPendingData = null;
+  generatePDF(data);
+  document.getElementById('modalAppId').textContent = data.appId;
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+function closeCaptcha() {
+  document.getElementById('captchaOverlay').classList.remove('show');
+  captchaPendingData = null;
+}
+
+// ── VALIDATE ──────────────────────────────────────────────────────────────────
 function validate() {
-  let ok = true;
+  var ok = true;
   function check(id, condition) {
-    const el = document.getElementById(id);
-    const err = document.getElementById('e-' + id);
+    var el = document.getElementById(id);
+    var err = document.getElementById('e-' + id);
     if (!condition) {
       el.classList.add('is-invalid');
       if (err) err.classList.add('show');
@@ -477,8 +546,8 @@ function validate() {
   check('college', document.getElementById('college').value.trim().length >= 3);
   check('stream', document.getElementById('stream').value !== '');
   check('passout', document.getElementById('passout').value !== '');
-  const declared = document.getElementById('declare').checked;
-  const declErr = document.getElementById('e-declare');
+  var declared = document.getElementById('declare').checked;
+  var declErr = document.getElementById('e-declare');
   if (!declared) { declErr.classList.add('show'); ok = false; }
   else { declErr.classList.remove('show'); }
   return ok;
@@ -487,27 +556,24 @@ function validate() {
 // ── SUBMIT ────────────────────────────────────────────────────────────────────
 function submitForm() {
   if (!validate()) {
-    const firstErr = document.querySelector('.is-invalid');
+    var firstErr = document.querySelector('.is-invalid');
     if (firstErr) firstErr.scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-  const data = {
-    appId:      'CDP-' + Date.now().toString().slice(-6),
-    legalName:  document.getElementById('legalName').value.trim(),
-    email:      document.getElementById('email').value.trim(),
-    mobile:     document.getElementById('mobile').value.trim(),
-    aadhar:     document.getElementById('aadhar').value.trim(),
-    college:    document.getElementById('college').value.trim(),
-    stream:     document.getElementById('stream').value,
-    passout:    document.getElementById('passout').value,
+  var cfg = APP_CONFIG;
+  var data = {
+    appId:       cfg.drive.formPrefix + '-' + Date.now().toString().slice(-6),
+    legalName:   document.getElementById('legalName').value.trim(),
+    email:       document.getElementById('email').value.trim(),
+    college:     document.getElementById('college').value.trim(),
+    stream:      document.getElementById('stream').value,
+    passout:     document.getElementById('passout').value,
     submittedAt: new Date().toLocaleString('en-IN', {
-      day:'2-digit', month:'short', year:'numeric',
-      hour:'2-digit', minute:'2-digit'
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit'
     }),
   };
-  generatePDF(data);
-  document.getElementById('modalAppId').textContent = data.appId;
-  document.getElementById('successOverlay').classList.add('show');
+  showCaptcha(data);
 }
 
 function closeSuccess() {
@@ -516,264 +582,359 @@ function closeSuccess() {
 }
 
 function resetForm() {
-  document.getElementById('appForm').querySelectorAll('input,select').forEach(el => {
+  document.getElementById('appForm').querySelectorAll('input,select').forEach(function(el) {
     if (el.type === 'checkbox') el.checked = false;
     else el.value = '';
     el.classList.remove('is-invalid');
   });
-  document.querySelectorAll('.err-msg').forEach(e => e.classList.remove('show'));
+  document.querySelectorAll('.err-msg').forEach(function(e) { e.classList.remove('show'); });
 }
 
-// ── PDF — TCS iON–STYLE ───────────────────────────────────────────────────────
+// ── PDF GENERATION ────────────────────────────────────────────────────────────
 function generatePDF(d) {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
-  const PW = 210, PH = 297;
-  const ML = 14, MR = 14, CW = PW - ML - MR;
-  let y = 0;
+  var cfg = APP_CONFIG;
+  var co  = cfg.company;
+  var dr  = cfg.drive;
 
-  const NAVY   = [0,  53, 128];
-  const BLUE   = [0,  86, 179];
-  const LBLUE  = [232,241,251];
-  const BORDER = [180,200,225];
-  const GREY   = [245,248,252];
-  const DARK   = [20, 35, 60];
-  const MID    = [70, 90,120];
-  const YEL_BG = [255,251,230];
-  const YEL_BD = [200,160,  0];
+  var jsPDF = window.jspdf.jsPDF;
+  var doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
+  var PW = 210, PH = 297;
+  var ML = 14, MR = 14, CW = PW - ML - MR;
+  var y = 0;
+
+  var NAVY   = [0,  53, 128];
+  var BLUE   = [0,  86, 179];
+  var LBLUE  = [232,241,251];
+  var BORDER = [180,200,225];
+  var GREY   = [245,248,252];
+  var DARK   = [20, 35, 60];
+  var MID    = [70, 90,120];
+  var GREEN  = [0, 102, 51];
 
   // ── TOP STRIPE ──
-  doc.setFillColor(...NAVY);
-  doc.rect(0, 0, PW, 2, 'F');
+  doc.setFillColor.apply(doc, NAVY); doc.rect(0, 0, PW, 2, 'F');
 
   // ── HEADER BG ──
-  doc.setFillColor(...NAVY);
-  doc.rect(0, 2, PW, 28, 'F');
+  doc.setFillColor.apply(doc, NAVY); doc.rect(0, 2, PW, 28, 'F');
 
-  // Small logo box (left)
-  doc.setFillColor(255,255,255);
-  doc.roundedRect(ML, 6, 26, 18, 1, 1, 'F');
-  doc.setTextColor(...NAVY);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(9);
-  doc.text('Tech', ML+13, 13.5, { align:'center' });
-  doc.setFontSize(7.5);
-  doc.setTextColor(180,0,0);
-  doc.text('Recruit', ML+13, 20, { align:'center' });
+  // ── LOGO BOX (left) — deterministic drawing ──
+  doc.setFillColor(255, 255, 255);
+  doc.roundedRect(ML, 6, 32, 18, 1, 1, 'F');
+  doc.setTextColor.apply(doc, NAVY);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(15);
+  doc.text(co.logoInitial, ML + 9, 17.5, { align: 'center' });
+  doc.setFontSize(7); doc.setTextColor.apply(doc, GREEN);
+  doc.text(co.logoSuffix, ML + 23, 14, { align: 'center' });
+  doc.setFontSize(5.5); doc.setTextColor.apply(doc, NAVY);
+  doc.text(co.logoSubtitle, ML + 23, 19, { align: 'center' });
+  doc.setFillColor.apply(doc, GREEN);
+  doc.rect(ML + 1, 22.5, 30, 1, 'F');
 
-  // Centre header
-  doc.setTextColor(255,255,255);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7.5);
-  doc.text('NATIONAL CAMPUS PLACEMENT AUTHORITY — INDIA', PW/2, 9, { align:'center' });
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(14);
-  doc.text('CAMPUS DRIVE — ONLINE APPLICATION FORM', PW/2, 18, { align:'center' });
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(180,210,255);
-  doc.text('Form No. CDP/2025/001  |  Academic Year 2024–25  |  [Ref: Campus Placement Regulation 7(1)(b)]', PW/2, 25, { align:'center' });
+  // ── CLIENT IP (top-right of header) ──
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(6);
+  doc.setTextColor(180, 210, 255);
+  doc.text('Client IP: ' + clientIP, PW - MR, 8, { align: 'right' });
+
+  // ── CENTRE HEADER TEXT ──
+  doc.setTextColor(255, 255, 255);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5);
+  doc.text(co.pdfDivisionHeader, PW / 2, 10, { align: 'center' });
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(13);
+  doc.text(dr.pdfFormTitle, PW / 2, 19, { align: 'center' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7);
+  doc.setTextColor(180, 210, 255);
+  doc.text(
+    'Form No. ' + dr.formNumber + '  |  Academic Year ' + dr.academicYear + '  |  Issued by: ' + co.name,
+    PW / 2, 26, { align: 'center' }
+  );
 
   y = 32;
 
   // ── APP ID / DATE ROW ──
-  doc.setFillColor(...LBLUE);
-  doc.rect(ML, y, CW, 12, 'F');
-  doc.setDrawColor(...BORDER);
-  doc.setLineWidth(0.4);
-  doc.rect(ML, y, CW, 12);
-  // App ID (left)
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(7);
-  doc.setTextColor(...MID);
-  doc.text('APPLICATION REFERENCE NUMBER', ML+3, y+4.5);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(13);
-  doc.setTextColor(...NAVY);
-  doc.text(d.appId, ML+3, y+10.5);
-  // Date (right)
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(7);
-  doc.setTextColor(...MID);
-  doc.text('DATE & TIME OF SUBMISSION', PW-MR-3, y+4.5, { align:'right' });
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(9);
-  doc.setTextColor(...DARK);
-  doc.text(d.submittedAt, PW-MR-3, y+10.5, { align:'right' });
+  doc.setFillColor.apply(doc, LBLUE); doc.rect(ML, y, CW, 12, 'F');
+  doc.setDrawColor.apply(doc, BORDER); doc.setLineWidth(0.4); doc.rect(ML, y, CW, 12);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor.apply(doc, MID);
+  doc.text('APPLICATION REFERENCE NUMBER', ML + 3, y + 4.5);
+  doc.setFontSize(13); doc.setTextColor.apply(doc, NAVY);
+  doc.text(d.appId, ML + 3, y + 10.5);
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(7); doc.setTextColor.apply(doc, MID);
+  doc.text('DATE & TIME OF SUBMISSION', PW - MR - 3, y + 4.5, { align: 'right' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor.apply(doc, DARK);
+  doc.text(d.submittedAt, PW - MR - 3, y + 10.5, { align: 'right' });
   y += 15;
 
   // ── HELPERS ──
   function secHeader(label, num) {
-    doc.setFillColor(...NAVY);
-    doc.rect(ML, y, CW, 9, 'F');
-    doc.setDrawColor(255,255,255);
-    doc.setLineWidth(0.3);
-    doc.circle(ML+7, y+4.5, 3.5);
-    doc.setTextColor(255,255,255);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(8);
-    doc.text(String(num), ML+7, y+5.6, { align:'center' });
-    doc.setFontSize(9);
-    doc.text(label, ML+14, y+5.8);
+    doc.setFillColor.apply(doc, NAVY); doc.rect(ML, y, CW, 9, 'F');
+    doc.setDrawColor(255, 255, 255); doc.setLineWidth(0.3);
+    doc.circle(ML + 7, y + 4.5, 3.5);
+    doc.setTextColor(255, 255, 255);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(8);
+    doc.text(String(num), ML + 7, y + 5.6, { align: 'center' });
+    doc.setFontSize(9); doc.text(label, ML + 14, y + 5.8);
     y += 10;
   }
 
-  function fieldRow(label, value) {
-    const RH = 13, LW = CW * 0.38;
-    doc.setFillColor(...GREY);
-    doc.rect(ML, y, LW, RH, 'F');
-    doc.setFillColor(255,255,255);
-    doc.rect(ML+LW, y, CW-LW, RH, 'F');
-    doc.setDrawColor(...BORDER);
-    doc.setLineWidth(0.3);
-    doc.rect(ML, y, CW, RH);
-    doc.line(ML+LW, y, ML+LW, y+RH);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(8.5);
-    doc.setTextColor(...MID);
-    doc.text(label, ML+3, y+RH/2+1.5);
-    doc.setFont('helvetica','bold');
-    doc.setFontSize(10);
-    doc.setTextColor(...DARK);
-    doc.text(String(value||'—'), ML+LW+4, y+RH/2+1.5);
+  function fieldRow(label, value, rowCW) {
+    var RH = 13, useCW = rowCW || CW, LW = useCW * 0.38;
+    doc.setFillColor.apply(doc, GREY); doc.rect(ML, y, LW, RH, 'F');
+    doc.setFillColor(255, 255, 255); doc.rect(ML + LW, y, useCW - LW, RH, 'F');
+    doc.setDrawColor.apply(doc, BORDER); doc.setLineWidth(0.3);
+    doc.rect(ML, y, useCW, RH);
+    doc.line(ML + LW, y, ML + LW, y + RH);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8.5); doc.setTextColor.apply(doc, MID);
+    doc.text(label, ML + 3, y + RH / 2 + 1.5);
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor.apply(doc, DARK);
+    doc.text(String(value || '\u2014'), ML + LW + 4, y + RH / 2 + 1.5);
     y += RH;
   }
 
-  // ── SECTION 1 ──
-  secHeader('SECTION 1 — PERSONAL DETAILS', 1);
-  fieldRow('Legal Full Name', d.legalName);
-  fieldRow('Email Address', d.email);
-  fieldRow('Mobile Number', '+91 ' + d.mobile);
-  fieldRow('Aadhaar (Last 4 Digits)', 'XXXX   XXXX   ' + d.aadhar);
+  // ── SECTION 1 — PERSONAL DETAILS ──
+  var s1StartY = y;
+  secHeader('SECTION 1 \u2014 ' + cfg.sections.personalDetails.toUpperCase(), 1);
+
+  var PHOTO_W = 34, PHOTO_H = 42;
+  var photoX = ML + CW - PHOTO_W;
+  var photoY = s1StartY + 10;
+  var fieldCW = CW - PHOTO_W - 5;
+
+  fieldRow(cfg.fields.legalName.label, d.legalName, fieldCW);
+  fieldRow(cfg.fields.email.label, d.email, fieldCW);
+
+  doc.setFillColor(235, 244, 255); doc.rect(photoX, photoY, PHOTO_W, PHOTO_H, 'F');
+  doc.setDrawColor.apply(doc, BORDER); doc.setLineWidth(0.4);
+  doc.rect(photoX, photoY, PHOTO_W, PHOTO_H);
+  doc.setDrawColor(190, 210, 235); doc.setLineWidth(0.3);
+  doc.line(photoX + 2, photoY + 2, photoX + PHOTO_W - 2, photoY + PHOTO_H - 8);
+  doc.line(photoX + PHOTO_W - 2, photoY + 2, photoX + 2, photoY + PHOTO_H - 8);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor.apply(doc, MID);
+  doc.text('Candidate', photoX + PHOTO_W / 2, photoY + PHOTO_H - 10, { align: 'center' });
+  doc.text('Photo', photoX + PHOTO_W / 2, photoY + PHOTO_H - 5, { align: 'center' });
+
+  if (y < photoY + PHOTO_H) y = photoY + PHOTO_H;
   y += 5;
 
-  // ── SECTION 2 ──
-  secHeader('SECTION 2 — ACADEMIC DETAILS', 2);
-  fieldRow('College / University', d.college);
-  fieldRow('Stream / Branch', d.stream);
-  fieldRow('Year of Pass Out', d.passout);
+  // ── SECTION 2 — ACADEMIC DETAILS ──
+  secHeader('SECTION 2 \u2014 ' + cfg.sections.academicDetails.toUpperCase(), 2);
+  fieldRow(cfg.fields.college.label, d.college);
+  fieldRow(cfg.fields.stream.label, d.stream);
+  fieldRow(cfg.fields.passout.label, d.passout);
   y += 5;
 
-  // ── DATA NOTICE ──
-  doc.setFillColor(...YEL_BG);
-  doc.rect(ML, y, CW, 16, 'F');
-  doc.setDrawColor(...YEL_BD);
-  doc.setLineWidth(0.4);
-  doc.rect(ML, y, CW, 16);
-  doc.setFillColor(...YEL_BD);
-  doc.rect(ML, y, 3, 16, 'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(7.5);
-  doc.setTextColor(80,55,0);
-  doc.text('DATA PROTECTION NOTICE', ML+7, y+6);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(90,65,0);
-  const noticeT = 'Aadhaar digits are collected solely for identity verification and will not be retained beyond that process. Your personal information is protected under the IT Act, 2000 and applicable data protection regulations.';
-  doc.text(doc.splitTextToSize(noticeT, CW-11), ML+7, y+11.5);
-  y += 20;
+  // ── SECTION 3 — INSTRUCTIONS ──
+  secHeader('SECTION 3 \u2014 INSTRUCTIONS', 3);
+  var instructions = cfg.instructions.map(function(line, idx) {
+    return (idx + 1) + '. ' + line.replace(/\{companyName\}/g, co.name);
+  });
+  var instrLineH = 6.5;
+  var instrH = instructions.length * instrLineH + 10;
+  doc.setFillColor(248, 252, 255); doc.rect(ML, y, CW, instrH, 'F');
+  doc.setDrawColor.apply(doc, BORDER); doc.rect(ML, y, CW, instrH);
+  doc.setFillColor.apply(doc, BLUE); doc.rect(ML, y, 3, instrH, 'F');
+  var iy = y + 7;
+  instructions.forEach(function(line) {
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, DARK);
+    doc.text(line, ML + 7, iy);
+    iy += instrLineH;
+  });
+  y += instrH + 5;
 
   // ── DECLARATION BOX ──
-  doc.setFillColor(240,246,255);
-  doc.rect(ML, y, CW, 24, 'F');
-  doc.setDrawColor(...BLUE);
-  doc.setLineWidth(0.5);
-  doc.rect(ML, y, CW, 24);
-  doc.setFillColor(...BLUE);
-  doc.rect(ML, y, 3, 24, 'F');
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(8);
-  doc.setTextColor(...BLUE);
-  doc.text('DECLARATION', ML+7, y+6.5);
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7.5);
-  doc.setTextColor(...MID);
-  const declT = 'I hereby declare that all information furnished above is true, correct and complete to the best of my knowledge. I understand that any false or misleading information will disqualify my candidature. I consent to processing of my personal data for campus recruitment purposes.';
-  doc.text(doc.splitTextToSize(declT, CW-11), ML+7, y+12.5);
+  var declT = cfg.declaration.pdfText.replace(/\{companyName\}/g, co.name);
+  doc.setFillColor(240, 246, 255); doc.rect(ML, y, CW, 24, 'F');
+  doc.setDrawColor.apply(doc, BLUE); doc.setLineWidth(0.5); doc.rect(ML, y, CW, 24);
+  doc.setFillColor.apply(doc, BLUE); doc.rect(ML, y, 3, 24, 'F');
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(8); doc.setTextColor.apply(doc, BLUE);
+  doc.text('DECLARATION', ML + 7, y + 6.5);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor.apply(doc, MID);
+  doc.text(doc.splitTextToSize(declT, CW - 11), ML + 7, y + 12.5);
   y += 28;
 
   // ── SIGNATURE BOXES ──
-  const sigLabels = ['CANDIDATE SIGNATURE', 'DATE', 'INSTITUTE STAMP / SEAL'];
-  const sw = (CW - 8) / 3;
-  sigLabels.forEach((lbl, i) => {
-    const sx = ML + i*(sw+4);
-    doc.setFillColor(250,252,255);
-    doc.rect(sx, y, sw, 22, 'F');
-    doc.setDrawColor(...BORDER);
-    doc.setLineWidth(0.3);
-    doc.rect(sx, y, sw, 22);
-    // dashed line inside
-    doc.setDrawColor(180,200,225);
-    doc.setLineDashPattern([1,1], 0);
-    doc.line(sx+4, y+15, sx+sw-4, y+15);
-    doc.setLineDashPattern([], 0);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(6.5);
-    doc.setTextColor(...MID);
-    doc.text(lbl, sx+sw/2, y+20, { align:'center' });
+  var sw = (CW - 8) / 3;
+  cfg.signatureLabels.forEach(function(lbl, i) {
+    var sx = ML + i * (sw + 4);
+    doc.setFillColor(250, 252, 255); doc.rect(sx, y, sw, 22, 'F');
+    doc.setDrawColor.apply(doc, BORDER); doc.setLineWidth(0.3); doc.rect(sx, y, sw, 22);
+    doc.setDrawColor(180, 200, 225); doc.setLineDashPattern([1, 1], 0);
+    doc.line(sx + 4, y + 15, sx + sw - 4, y + 15); doc.setLineDashPattern([], 0);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(6.5); doc.setTextColor.apply(doc, MID);
+    doc.text(lbl, sx + sw / 2, y + 20, { align: 'center' });
   });
   y += 26;
 
-  // ── OFFICE USE STRIP ──
-  doc.setFillColor(...LBLUE);
-  doc.rect(ML, y, CW, 9, 'F');
-  doc.setDrawColor(...BORDER);
-  doc.rect(ML, y, CW, 9);
-  doc.setFont('helvetica','bold');
-  doc.setFontSize(7.5);
-  doc.setTextColor(...NAVY);
-  doc.text('FOR OFFICE USE ONLY', ML+3, y+6);
-  const offw = (CW-55)/3;
-  ['Verified By','Date of Verification','Remarks / Status'].forEach((l,i)=>{
-    const ox = ML+55+i*offw;
-    doc.setFillColor(255,255,255);
-    doc.rect(ox,y,offw,9,'F');
-    doc.setDrawColor(...BORDER);
-    doc.rect(ox,y,offw,9);
-    doc.setFont('helvetica','normal');
-    doc.setFontSize(6.5);
-    doc.setTextColor(...MID);
-    doc.text(l, ox+offw/2, y+6, { align:'center' });
-  });
-  y += 13;
-
   // ── BARCODE STRIP ──
-  const bcW = 48, bcH = 12, bcX = ML;
-  doc.setFillColor(255,255,255);
-  doc.rect(bcX, y, bcW, bcH, 'F');
-  doc.setDrawColor(...BORDER);
-  doc.rect(bcX, y, bcW, bcH);
-  const bars = 28, bStep = (bcW-4)/bars;
-  for (let i = 0; i < bars; i++) {
-    const bx = bcX+2+i*bStep;
-    const bh = (i%3===0)?bcH-3:(i%2===0?bcH-5:bcH-7);
-    doc.setFillColor(20,35,60);
-    doc.rect(bx, y+2, bStep*0.55, bh, 'F');
+  var bcW = 48, bcH = 12, bcX = ML;
+  doc.setFillColor(255, 255, 255); doc.rect(bcX, y, bcW, bcH, 'F');
+  doc.setDrawColor.apply(doc, BORDER); doc.rect(bcX, y, bcW, bcH);
+  var bars = 28, bStep = (bcW - 4) / bars;
+  for (var bi = 0; bi < bars; bi++) {
+    var bx = bcX + 2 + bi * bStep;
+    var bh = (bi % 3 === 0) ? bcH - 3 : (bi % 2 === 0 ? bcH - 5 : bcH - 7);
+    doc.setFillColor(20, 35, 60); doc.rect(bx, y + 2, bStep * 0.55, bh, 'F');
   }
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(6);
-  doc.setTextColor(...DARK);
-  doc.text(d.appId, bcX+bcW/2, y+bcH-0.8, { align:'center' });
-
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7);
-  doc.setTextColor(...MID);
-  doc.text(`Form CDP/2025/001  |  Generated: ${d.submittedAt}  |  System-generated document — no signature required`, PW-MR, y+5, { align:'right' });
-  doc.text('TechRecruit National Campus Placement Portal  |  campusdrive.techrecruit.in', PW-MR, y+10, { align:'right' });
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(6); doc.setTextColor.apply(doc, DARK);
+  doc.text(d.appId, bcX + bcW / 2, y + bcH - 0.8, { align: 'center' });
+  doc.setFontSize(7); doc.setTextColor.apply(doc, MID);
+  doc.text(
+    'Form ' + dr.formNumber + '  |  Generated: ' + d.submittedAt + '  |  System-generated document',
+    PW - MR, y + 5, { align: 'right' }
+  );
+  doc.text(
+    co.name + '  |  ' + co.division + '  |  ' + co.website,
+    PW - MR, y + 10, { align: 'right' }
+  );
 
   // ── FOOTER STRIP ──
-  doc.setFillColor(...NAVY);
-  doc.rect(0, PH-10, PW, 10, 'F');
-  doc.setFont('helvetica','normal');
-  doc.setFontSize(7);
-  doc.setTextColor(180,210,255);
-  doc.text('National Campus Placement Authority  |  Campus Drive Application — CDP/2025/001  |  Academic Year 2024–25', PW/2, PH-4.5, { align:'center' });
-  doc.setTextColor(255,255,255);
-  doc.text('Page 1 of 1', PW-MR, PH-4.5, { align:'right' });
-  doc.text(d.appId, ML, PH-4.5);
+  doc.setFillColor.apply(doc, NAVY); doc.rect(0, PH - 14, PW, 14, 'F');
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(180, 210, 255);
+  doc.text(
+    co.name + '  |  Campus Drive Application \u2014 ' + dr.formNumber + '  |  Academic Year ' + dr.academicYear,
+    PW / 2, PH - 8.5, { align: 'center' }
+  );
+  doc.setFontSize(6.5);
+  doc.text('Client IP: ' + clientIP, PW / 2, PH - 4, { align: 'center' });
+  doc.setTextColor(255, 255, 255);
+  doc.text('Page 1 of 1', PW - MR, PH - 4, { align: 'right' });
+  doc.text(d.appId, ML, PH - 4);
 
-  doc.save(`CampusDrive_${d.appId}.pdf`);
+  doc.save(co.name.replace(/\s+/g, '') + '_' + d.appId + '.pdf');
 }
+
+// ── INIT UI FROM CONFIG ───────────────────────────────────────────────────────
+function initUI(cfg) {
+  var co = cfg.company;
+  var dr = cfg.drive;
+  var fl = cfg.fields;
+  var sc = cfg.sections;
+
+  document.title = dr.pageTitle;
+
+  document.getElementById('svgLogoInitial').textContent  = co.logoInitial;
+  document.getElementById('svgLogoSuffix').textContent   = co.logoSuffix;
+  document.getElementById('svgLogoSubtitle').textContent = co.logoSubtitle;
+  document.getElementById('logoSvg').setAttribute('aria-label', co.name + ' logo');
+
+  document.getElementById('portalTagline').textContent     = co.portalTagline;
+  document.getElementById('portalSubTagline').textContent  = co.portalSubTagline;
+  document.getElementById('portalAcademicYear').textContent = 'Academic Year ' + dr.academicYear;
+  document.getElementById('portalSeason').textContent      = dr.season;
+
+  document.getElementById('formTitle').textContent    = dr.formTitle;
+  document.getElementById('formSubtitle').textContent = dr.formSubtitle;
+  document.getElementById('formNumber').textContent   = dr.formNumber;
+
+  // Build notice bar safely using DOM (avoids innerHTML with config data)
+  var noticeP = document.getElementById('noticeText');
+  noticeP.innerHTML = '';
+  var noticePrefix = document.createElement('b');
+  noticePrefix.textContent = cfg.notice.prefix + ': ';
+  noticeP.appendChild(noticePrefix);
+  cfg.notice.segments.forEach(function(seg) {
+    if (seg.bold) {
+      var bold = document.createElement('b');
+      bold.textContent = seg.text;
+      noticeP.appendChild(bold);
+    } else {
+      noticeP.appendChild(document.createTextNode(seg.text));
+    }
+  });
+
+  document.getElementById('sectionPersonalTitle').textContent = sc.personalDetails;
+  document.getElementById('sectionAcademicTitle').textContent = sc.academicDetails;
+  document.getElementById('sectionDeclTitle').textContent     = sc.declarationConsent;
+
+  document.getElementById('lblLegalName').textContent  = fl.legalName.label;
+  document.getElementById('legalName').placeholder     = fl.legalName.placeholder;
+  document.getElementById('hintLegalName').textContent = fl.legalName.hint;
+  document.getElementById('e-legalName').textContent   = fl.legalName.error;
+
+  document.getElementById('lblEmail').textContent  = fl.email.label;
+  document.getElementById('email').placeholder     = fl.email.placeholder;
+  document.getElementById('hintEmail').textContent = fl.email.hint;
+  document.getElementById('e-email').textContent   = fl.email.error;
+
+  document.getElementById('lblMobile').textContent   = fl.mobile.label;
+  document.getElementById('mobilePrefix').textContent = fl.mobile.prefix;
+  document.getElementById('mobile').placeholder      = fl.mobile.placeholder;
+  document.getElementById('e-mobile').textContent    = fl.mobile.error;
+
+  document.getElementById('lblAadhar').textContent   = fl.aadhar.label;
+  document.getElementById('aadharMask').textContent  = fl.aadhar.maskPrefix;
+  document.getElementById('aadhar').placeholder      = fl.aadhar.placeholder;
+  document.getElementById('hintAadhar').textContent  = fl.aadhar.hint;
+  document.getElementById('e-aadhar').textContent    = fl.aadhar.error;
+
+  document.getElementById('lblCollege').textContent  = fl.college.label;
+  document.getElementById('college').placeholder     = fl.college.placeholder;
+  document.getElementById('e-college').textContent   = fl.college.error;
+
+  document.getElementById('lblStream').textContent = fl.stream.label;
+  document.getElementById('e-stream').textContent  = fl.stream.error;
+
+  document.getElementById('lblPassout').textContent = fl.passout.label;
+  document.getElementById('e-passout').textContent  = fl.passout.error;
+
+  document.getElementById('declarationText').textContent         = cfg.declaration.uiText;
+  document.getElementById('declarationCheckboxLabel').textContent = fl.declare.checkboxLabel;
+  document.getElementById('e-declare').textContent               = fl.declare.error;
+
+  document.getElementById('footerPortalName').textContent  = co.portalName;
+  document.getElementById('footerDivision').textContent    = co.division;
+  document.getElementById('footerYear').textContent        = dr.academicYear;
+  document.getElementById('footerFormNumber').textContent  = dr.formNumber;
+
+  // Stream dropdown
+  var streamSel = document.getElementById('stream');
+  streamSel.innerHTML = '';
+  var defOpt = document.createElement('option');
+  defOpt.value = ''; defOpt.textContent = fl.stream.placeholder;
+  streamSel.appendChild(defOpt);
+  cfg.streams.forEach(function(grp) {
+    var og = document.createElement('optgroup');
+    og.label = grp.group;
+    grp.options.forEach(function(opt) {
+      var o = document.createElement('option');
+      o.textContent = opt; og.appendChild(o);
+    });
+    streamSel.appendChild(og);
+  });
+
+  // Passout year dropdown
+  var yearSel = document.getElementById('passout');
+  yearSel.innerHTML = '';
+  var defYear = document.createElement('option');
+  defYear.value = ''; defYear.textContent = fl.passout.placeholder;
+  yearSel.appendChild(defYear);
+  cfg.passoutYears.forEach(function(yr) {
+    var o = document.createElement('option');
+    o.value = yr; o.textContent = yr;
+    yearSel.appendChild(o);
+  });
+}
+
+// ── BOOTSTRAP ─────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  fetch('config.json')
+    .then(function(res) {
+      if (!res.ok) throw new Error('Failed to load config.json (HTTP ' + res.status + ')');
+      return res.json();
+    })
+    .then(function(cfg) {
+      APP_CONFIG = cfg;
+      initUI(cfg);
+      fetchClientIP(cfg.ipEndpoints);
+    })
+    .catch(function(err) {
+      console.error('Config load error:', err);
+      document.body.innerHTML =
+        '<div style="padding:40px;text-align:center;color:#cc0000;font-family:sans-serif;">' +
+        '<h2>Configuration Error</h2>' +
+        '<p>Unable to load <code>config.json</code>. Please ensure the file is present and valid JSON.</p>' +
+        '<pre style="text-align:left;background:#f8f8f8;padding:12px;border-radius:4px;">' +
+        err.message + '</pre></div>';
+    });
+});
 </script>
 </body>
 </html>
